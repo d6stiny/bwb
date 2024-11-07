@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../config/Database.php';
+
 class AuthController {
     private $db;
 
@@ -17,7 +19,7 @@ class AuthController {
         exit;
     }
 
-    public function register($name, $email, $password) {
+    public function register($email, $password) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->sendResponse(['error' => 'Invalid email'], 400);
         }
@@ -35,8 +37,8 @@ class AuthController {
 
         try {
             $stmt = $this->db->query(
-                "INSERT INTO user (name, email, password) VALUES (?, ?, ?)",
-                [$name, $email, $hashedPassword]
+                "INSERT INTO user (email, password) VALUES (?, ?)",
+                [$email, $hashedPassword]
             );
             
             $_SESSION['user_id'] = $this->db->getConnection()->lastInsertId();
@@ -62,21 +64,22 @@ class AuthController {
         }
 
         $_SESSION['user_id'] = $user['id'];
-        $this->sendResponse(['message' => 'Login successful', 'user_id' => $user['id']]);
+        header('Location: /dashboard.php');
     }
 
     public function logout() {
         session_destroy();
-        $this->sendResponse(['message' => 'Logout successful']);
+        header('Location: /login.html');
     }
 
     public function getCurrentUser() {
         if (!isset($_SESSION['user_id'])) {
-            $this->sendResponse(['error' => 'Not authenticated'], 401);
+            header('Location: /login.html');
+            exit;
         }
-
+    
         $stmt = $this->db->query(
-            "SELECT id, name, email FROM user WHERE id = ?",
+            "SELECT id, email FROM user WHERE id = ?",
             [$_SESSION['user_id']]
         );
         
@@ -84,9 +87,17 @@ class AuthController {
         
         if (!$user) {
             session_destroy();
-            $this->sendResponse(['error' => 'User not found'], 404);
+            header('Location: /login.html');
+            exit;
         }
+    
+        return $user;
+    }
 
-        $this->sendResponse($user);
+    public function getBottles($userId) {
+        return $this->db->query(
+            "SELECT * FROM bottle WHERE user_id = ?", 
+            [$userId]
+        )->fetchAll();
     }
 }
