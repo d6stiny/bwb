@@ -17,7 +17,7 @@ $user = $auth->getCurrentUser();
 <body>
     <header>
         <h1>Welcome, <?php echo htmlspecialchars($user['email']); ?></h1>
-        <a href="/logout.php">Logout</a>
+        <a href="/logout">Logout</a>
     </header>
     <main>
         <h2>Your Dashboard</h2>
