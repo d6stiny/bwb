@@ -69,12 +69,12 @@ class AuthController {
 
     public function logout() {
         session_destroy();
-        header('Location: /login.html');
+        header('Location: /login.php');
     }
 
     public function getCurrentUser() {
         if (!isset($_SESSION['user_id'])) {
-            header('Location: /login.html');
+            header('Location: /login.php');
             exit;
         }
     
@@ -87,7 +87,7 @@ class AuthController {
         
         if (!$user) {
             session_destroy();
-            header('Location: /login.html');
+            header('Location: /login.php');
             exit;
         }
     
