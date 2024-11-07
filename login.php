@@ -23,6 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login - BWB</title>
 </head>
 <body>
+    <header class="cabecalho">
+        
+    </header>
     <?php if (isset($error)): ?>
         <div class="error"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
