@@ -4,7 +4,7 @@ class Database {
     private $connection = null;
     
     private function __construct() {
-        $host = '127.0.0.1';  // Change from 'localhost' to '127.0.0.1'
+        $host = '127.0.0.1';
         $db   = 'bwb';
         $user = 'root';
         $pass = 'youshallnotpass';

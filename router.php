@@ -1,5 +1,4 @@
 <?php
-// Normalize the path
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 // Handle root path
@@ -12,18 +11,15 @@ if ($path === '/' || $path === '') {
     }
 }
 
-// Handle static files
 if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js|html)$/', $_SERVER["REQUEST_URI"])) {
     return false;
 }
 
-// Try exact file first
 $exactFile = __DIR__ . $path;
 if (file_exists($exactFile)) {
     return false;
 }
 
-// Try with .php extension
 $phpFile = __DIR__ . $path . '.php';
 if (file_exists($phpFile)) {
     require $phpFile;
