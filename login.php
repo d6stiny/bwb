@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <header class="cabecalho">
-        
+        <a href="index.html" class="link_back"><button class="but_back">Go to Home Page</button></a>
+        <h1>Login</h1>
     </header>
     <?php if (isset($error)): ?>
         <div class="error"><?php echo htmlspecialchars($error); ?></div>
@@ -41,6 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? <a href="signup">Sign up</a></p>
+    <p>Don't have an account? <a href="signup.php">Sign up</a></p>
 </body>
 </html>
