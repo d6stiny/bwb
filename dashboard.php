@@ -1,18 +1,21 @@
 <?php
 require_once 'controllers/Auth.php';
+require_once 'models/Bottle.php';
 
 $auth = new AuthController();
-
-// Store user data in variable
 $user = $auth->getCurrentUser();
+
+// Get user's bottles
+$bottles = $auth->getBottles($user['id']);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Bottles</title>
+    <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -224,12 +227,15 @@ $user = $auth->getCurrentUser();
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
             <h1>Your bottles</h1>
             <button class="logout-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 8px;">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                     <polyline points="16 17 21 12 16 7"></polyline>
                     <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -240,19 +246,19 @@ $user = $auth->getCurrentUser();
         <div class="bottles-grid">
             <div class="bottle-card add-bottle" id="addBottleCard">
                 <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                     Add bottle
                 </span>
             </div>
-            <div class="bottle-card">
-                <span>Bottle 1</span>
-            </div>
-            <div class="bottle-card">
-                <span>Bottle 2</span>
-            </div>
+            <?php foreach ($bottles as $bottle): ?>
+                <a href="/bottles/<?php echo htmlspecialchars($bottle['id']); ?>" class="bottle-card">
+                    <span>Bottle #<?php echo htmlspecialchars($bottle['id']); ?></span>
+                </a>
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -261,7 +267,8 @@ $user = $auth->getCurrentUser();
             <div class="dialog-header">
                 <h2 id="dialogTitle" class="dialog-title">Add Bottle</h2>
                 <button class="close-button" aria-label="Close dialog">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
@@ -312,4 +319,5 @@ $user = $auth->getCurrentUser();
         });
     </script>
 </body>
+
 </html>

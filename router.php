@@ -1,10 +1,17 @@
 <?php
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
-// Handle root path
+// Handle /bottles/:id route
+if (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
+    $_GET['id'] = $matches[1]; // Store bottle ID in $_GET
+    require __DIR__ . '/bottle.php';
+    return true;
+}
+
+// Your existing routes
 if ($path === '/' || $path === '') {
     if (file_exists(__DIR__ . '/index.html')) {
-        return false; // Serve index.html
+        return false;
     } elseif (file_exists(__DIR__ . '/index.php')) {
         require __DIR__ . '/index.php';
         return true;
