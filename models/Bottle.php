@@ -13,4 +13,11 @@ class Bottle extends Model {
             [$bottleId]
         )->fetchAll();
     }
+
+    public function delete($bottleId, $userId) {
+        return $this->db->query(
+            "DELETE FROM bottle WHERE id = ? AND user_id = ?",
+            [$bottleId, $userId]
+        )->rowCount();
+    }
 }

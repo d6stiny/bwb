@@ -15,12 +15,28 @@ $user = $auth->getCurrentUser();
     <title>Your Bottles</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Nunito', Arial, sans-serif;
-            background-color: #0a0d13;
-            color: white;
+        :root {
+            --background: #0a0d13;
+            --dialog-background: #0d1117;
+            --input-background: #141619;
+            --border-color: #30363d;
+            --text-color: #ffffff;
+            --button-color: #4cb5f9;
+            --button-hover: #3a91c5;
+            --logout-button: #3c3f43;
+            --logout-button-hover: #4a4d51;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -42,35 +58,28 @@ $user = $auth->getCurrentUser();
         h1 {
             font-size: 24px;
             font-weight: 600;
-            margin: 0;
         }
 
         .logout-btn {
-            background-color: #58cc02;
+            background-color: #3c3f43;
             color: white;
             font-weight: 700;
-            font-size: 18px;
-            padding: 12px 24px;
+            font-size: 15px;
+            padding: 8px 16px;
             border: none;
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.15s ease-in-out;
-            border-bottom: 4px solid #45a700;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-family: 'Nunito', Arial, sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .logout-btn:hover {
-            background-color: #4caf00;
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            background-color: #4a4d51;
         }
 
         .logout-btn:active {
-            transform: translateY(4px);
-            border-bottom: 0;
-            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(1px);
         }
 
         .bottles-grid {
@@ -81,7 +90,7 @@ $user = $auth->getCurrentUser();
 
         .bottle-card {
             background-color: transparent;
-            border: 1px solid #1f2937;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 24px;
             display: flex;
@@ -91,12 +100,8 @@ $user = $auth->getCurrentUser();
             transition: border-color 0.3s ease;
         }
 
-        .bottle-card:hover {
-            border-color: #4b5563;
-        }
-
         .add-bottle {
-            border: 2px dashed #4b5563;
+            border: 2px dashed var(--border-color);
         }
 
         .add-bottle span {
@@ -104,10 +109,6 @@ $user = $auth->getCurrentUser();
             align-items: center;
             gap: 8px;
             color: #9ca3af;
-        }
-
-        .add-bottle:hover {
-            border-color: #6b7280;
         }
 
         .dialog-overlay {
@@ -124,50 +125,92 @@ $user = $auth->getCurrentUser();
         }
 
         .dialog {
-            background-color: #1f2937;
-            padding: 24px;
-            border-radius: 8px;
+            background-color: var(--dialog-background);
+            border-radius: 24px;
             width: 100%;
             max-width: 400px;
+            border: 1px solid var(--border-color);
+            padding: 32px;
+            position: relative;
         }
 
-        .dialog h2 {
-            margin-top: 0;
-            margin-bottom: 16px;
+        .dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .dialog-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            background: none;
+            border: none;
+            color: #6e7681;
+            cursor: pointer;
+            padding: 8px;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: white;
         }
 
         .dialog-form {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-        }
-
-        .dialog-form label {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            gap: 24px;
         }
 
         .dialog-form input {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #4b5563;
-            background-color: #374151;
-            color: white;
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-background);
+            color: var(--text-color);
+            font-size: 18px;
+            font-weight: 600;
         }
 
-        .dialog-form button {
-            padding: 8px 16px;
-            background-color: #58cc02;
+        .dialog-form input:focus {
+            outline: none;
+            border-color: var(--button-color);
+        }
+
+        .dialog-form input::placeholder {
+            color: white;
+            opacity: 1;
+        }
+
+        .submit-button {
+            background-color: var(--button-color);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 16px;
+            padding: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            font-size: 18px;
+            margin-top: 8px;
+            transition: transform 0.2s, background-color 0.2s;
+            border-bottom: 4px solid var(--button-hover);
         }
 
-        .dialog-form button:hover {
-            background-color: #4caf00;
+        .submit-button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .submit-button:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
         }
 
         .hidden {
@@ -185,7 +228,14 @@ $user = $auth->getCurrentUser();
     <div class="container">
         <header>
             <h1>Your bottles</h1>
-            <a href="/logout" class="logout-btn">Logout</a>
+            <button class="logout-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Log Out
+            </button>
         </header>
         <div class="bottles-grid">
             <div class="bottle-card add-bottle" id="addBottleCard">
@@ -208,17 +258,19 @@ $user = $auth->getCurrentUser();
 
     <div id="addBottleDialog" class="dialog-overlay hidden" role="dialog" aria-labelledby="dialogTitle">
         <div class="dialog">
-            <h2 id="dialogTitle">Add New Bottle</h2>
+            <div class="dialog-header">
+                <h2 id="dialogTitle" class="dialog-title">Add Bottle</h2>
+                <button class="close-button" aria-label="Close dialog">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
             <form id="addBottleForm" class="dialog-form">
-                <label for="bottleId">
-                    Bottle ID:
-                    <input type="text" id="bottleId" name="bottleId" required>
-                </label>
-                <label for="bottleName">
-                    Bottle Name:
-                    <input type="text" id="bottleName" name="bottleName" required>
-                </label>
-                <button type="submit">Add Bottle</button>
+                <input type="text" id="bottleId" name="bottleId" placeholder="Bottle ID" required>
+                <input type="text" id="bottleName" name="bottleName" placeholder="Bottle Name" required>
+                <button type="submit" class="submit-button">Add Bottle</button>
             </form>
         </div>
     </div>
@@ -227,10 +279,15 @@ $user = $auth->getCurrentUser();
         const addBottleCard = document.getElementById('addBottleCard');
         const addBottleDialog = document.getElementById('addBottleDialog');
         const addBottleForm = document.getElementById('addBottleForm');
+        const closeButton = document.querySelector('.close-button');
         const bottlesGrid = document.querySelector('.bottles-grid');
 
         addBottleCard.addEventListener('click', () => {
             addBottleDialog.classList.remove('hidden');
+        });
+
+        closeButton.addEventListener('click', () => {
+            addBottleDialog.classList.add('hidden');
         });
 
         addBottleDialog.addEventListener('click', (event) => {
@@ -246,7 +303,7 @@ $user = $auth->getCurrentUser();
 
             const newBottleCard = document.createElement('div');
             newBottleCard.className = 'bottle-card';
-            newBottleCard.innerHTML = `<span>${bottleName} (ID: ${bottleId})</span>`;
+            newBottleCard.innerHTML = `<span>${bottleName}</span>`;
 
             bottlesGrid.appendChild(newBottleCard);
 
