@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  --background: 214 74% 5;
+  --foreground: 204 56% 96;
+  --muted-foreground: 195 5% 66;
+  --secondary: 195 21% 70;
+  --secondary-foreground: 200 32% 13;
+  --secondary-shadow: 194 8% 48;
+  --border: 204 26% 25;
+  --radius: 0.75rem; /* 12px */
+  --shadow: 0.25rem; /* 4px */
+  --button-gap: 0.5rem; /* 8px */
+  --grid-gap: 1rem; /* 16px */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+
+  font-family: "Barlow", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem; /* 28px */
+  width: 100%;
+  max-width: 48rem; /* 768px */
+  margin: 0 auto;
+  padding: 1rem 2rem; /* 16px 32px */
+}
+
+.font-thin {
+  font-family: "Barlow", sans-serif;
+  font-weight: 100;
+}
+
+.font-extralight {
+  font-family: "Barlow", sans-serif;
+  font-weight: 200;
+}
+
+.font-light {
+  font-family: "Barlow", sans-serif;
+  font-weight: 300;
+}
+
+.font-regular {
+  font-family: "Barlow", sans-serif;
+  font-weight: 400;
+}
+
+.font-medium {
+  font-family: "Barlow", sans-serif;
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+}
+
+.font-bold {
+  font-family: "Barlow", sans-serif;
+  font-weight: 700;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: var(--button-gap); /* 8px */
+  background: none;
+
+  font-size: 1rem; /* 14px */
+  font-weight: 600;
+  padding: 0.75rem 1.5rem; /* 12px 24px */
+  border-radius: var(--radius);
+  cursor: pointer;
+
+  position: relative;
+  top: 0;
+  transition: all 0.1s ease;
+  user-select: none;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.secondary {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  box-shadow: 0 var(--shadow) 0 hsl(var(--secondary-shadow));
+}
+
+.secondary:active {
+  top: var(--shadow);
+  box-shadow: 0 0 0 hsl(var(--secondary-shadow));
+}
+
+.size-4 {
+  width: 1rem; /* 16px */
+  height: 1rem;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mt-7 {
+  margin-top: 1.75rem; /* 7px */
+}
+
+h1 {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.border-dashed {
+  border-style: dashed;
+  border-width: 0.125rem; /* 2px */
+  border-color: hsl(var(--border));
+}
+
+.border {
+  border-style: solid;
+  border-width: 0.125rem; /* 2px */
+  border-color: hsl(var(--border));
+}
+
+a {
+  text-decoration: none;
+}
+
+.w-fit {
+  width: fit-content;
+}

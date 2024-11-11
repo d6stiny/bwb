@@ -1,0 +1,41 @@
+:root {
+  --bottle-button-height: 5rem; /* 80px */
+}
+
+.bottles-grid {
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.add-bottle,
+.bottle {
+  height: var(--bottle-button-height);
+}
+
+.add-bottle:active,
+.bottle:active {
+  transform: scale(0.9);
+}
+
+.add-bottle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.bottle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+@media only screen and (max-width: 768px) {
+  .bottles-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}

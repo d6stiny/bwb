@@ -23,6 +23,12 @@ if (!$bottleDetails) {
 // Get temperature data
 $temperatures = $bottle->getTemperatures($bottleId);
 
+// Get latest temperature
+$temperature = !empty($temperatures) ? floatval($temperatures[0]['value']) : 0;
+
+// Get bottle level data
+$bottle_level = $bottle->getLevel($bottleId) ?? 0;
+
 // Format data for chart
 $temperature_data = array_map(function ($temp) {
     return [

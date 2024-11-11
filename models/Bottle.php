@@ -34,4 +34,13 @@ class Bottle extends Model
             [$bottleId, $userId]
         )->fetch();
     }
+
+    public function getLevel($bottleId)
+    {
+        $result = $this->db->query(
+            "SELECT level FROM bottle WHERE id = ?",
+            [$bottleId]
+        )->fetch();
+        return $result ? $result['level'] : 0;
+    }
 }
