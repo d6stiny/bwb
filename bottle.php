@@ -7,7 +7,7 @@ $user = $auth->getCurrentUser();
 
 $bottleId = $_GET['id'] ?? null;
 if (!$bottleId) {
-    header('Location: /dashboard');
+    header('Location: /bwb/dashboard');
     exit;
 }
 
@@ -16,7 +16,7 @@ $bottle = new Bottle();
 // Get bottle details - using array access for user ID
 $bottleDetails = $bottle->getById($bottleId, $user['id']);
 if (!$bottleDetails) {
-    header('Location: /dashboard');
+    header('Location: /bwb/dashboard');
     exit;
 }
 

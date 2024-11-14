@@ -2,9 +2,15 @@
 // Get the request URI and remove any query strings
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Remove the project directory name from the path if it exists
-$basePath = dirname($_SERVER['SCRIPT_NAME']);
-$path = str_replace($basePath, '', $requestUri);
+// Get the project directory name
+$projectDir = '/bwb'; // Update this to your project folder name in xampp/htdocs
+$path = str_replace($projectDir, '', $requestUri);
+
+// Handle /dashboard route
+if ($path === '/dashboard') {
+    require __DIR__ . '/dashboard.php';
+    return true;
+}
 
 // Handle /bottles/:id route
 if (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
@@ -13,25 +19,29 @@ if (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
     return true;
 }
 
+// Handle login/logout routes
+if ($path === '/login') {
+    require __DIR__ . '/login.php';
+    return true;
+}
+
+if ($path === '/logout') {
+    require __DIR__ . '/logout.php';
+    return true;
+}
+
 // Handle root path
 if ($path === '/' || $path === '') {
     if (file_exists(__DIR__ . '/index.html')) {
-        return false; // Let Apache serve static files
-    } elseif (file_exists(__DIR__ . '/index.php')) {
-        require __DIR__ . '/index.php';
-        return true;
+        return false;
     }
+    require __DIR__ . '/index.html';
+    return true;
 }
 
 // Allow direct access to static files
 if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js|html)$/', $path)) {
-    return false; // Let Apache handle static files
-}
-
-// Check for exact file match
-$exactFile = __DIR__ . $path;
-if (file_exists($exactFile)) {
-    return false; // Let Apache serve the file
+    return false;
 }
 
 // Check for PHP file

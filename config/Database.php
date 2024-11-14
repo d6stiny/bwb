@@ -9,7 +9,7 @@ class Database
         $host = '127.0.0.1';
         $db = 'bwb';
         $user = 'root';
-        $pass = 'youshallnotpass';
+        $pass = 'root';
         $port = '3306';
         $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
         $options = [
