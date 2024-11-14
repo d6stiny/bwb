@@ -2,24 +2,28 @@
 
 require_once __DIR__ . '/../config/Database.php';
 
-class AuthController {
+class AuthController
+{
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getInstance();
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    private function sendResponse($data, $code = 200) {
+    private function sendResponse($data, $code = 200)
+    {
         http_response_code($code);
         header('Content-Type: application/json');
         echo json_encode($data);
         exit;
     }
 
-    public function register($email, $password) {
+    public function register($email, $password)
+    {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->sendResponse(['error' => 'Invalid email'], 400);
         }
@@ -40,7 +44,7 @@ class AuthController {
                 "INSERT INTO user (email, password) VALUES (?, ?)",
                 [$email, $hashedPassword]
             );
-            
+
             $_SESSION['user_id'] = $this->db->getConnection()->lastInsertId();
             $this->sendResponse([
                 'message' => 'Registration successful',
@@ -51,12 +55,13 @@ class AuthController {
         }
     }
 
-    public function login($email, $password) {
+    public function login($email, $password)
+    {
         $stmt = $this->db->query(
             "SELECT id, password FROM user WHERE email = ?",
             [$email]
         );
-        
+
         $user = $stmt->fetch();
 
         if (!$user || !password_verify($password, $user['password'])) {
@@ -67,36 +72,39 @@ class AuthController {
         header('Location: /dashboard');
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_destroy();
         header('Location: /login');
     }
 
-    public function getCurrentUser() {
+    public function getCurrentUser()
+    {
         if (!isset($_SESSION['user_id'])) {
             header('Location: /login');
             exit;
         }
-    
+
         $stmt = $this->db->query(
             "SELECT id, email FROM user WHERE id = ?",
             [$_SESSION['user_id']]
         );
-        
+
         $user = $stmt->fetch();
-        
+
         if (!$user) {
             session_destroy();
             header('Location: /login');
             exit;
         }
-    
+
         return $user;
     }
 
-    public function getBottles($userId) {
+    public function getBottles($userId)
+    {
         return $this->db->query(
-            "SELECT * FROM bottle WHERE user_id = ?", 
+            "SELECT * FROM bottle WHERE user_id = ?",
             [$userId]
         )->fetchAll();
     }
