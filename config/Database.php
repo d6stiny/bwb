@@ -11,18 +11,15 @@ class Database
         $user = 'root';
         $pass = 'youshallnotpass';
         $port = '3306';
-
         $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false
         ];
-
         try {
             $this->connection = new PDO($dsn, $user, $pass, $options);
         } catch (PDOException $e) {
-            // More detailed error message
             throw new Exception(sprintf(
                 "Connection failed: %s (Error code: %s)",
                 $e->getMessage(),
@@ -37,5 +34,18 @@ class Database
             self::$instance = new self();
         }
         return self::$instance;
+    }
+
+    // Add these new methods
+    public function query($sql, $params = [])
+    {
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    public function getConnection()
+    {
+        return $this->connection;
     }
 }
