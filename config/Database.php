@@ -1,41 +1,41 @@
 <?php
-class Database {
+class Database
+{
     private static $instance = null;
     private $connection = null;
-    
-    private function __construct() {
+
+    private function __construct()
+    {
         $host = '127.0.0.1';
-        $db   = 'bwb';
+        $db = 'bwb';
         $user = 'root';
         $pass = 'youshallnotpass';
         $port = '3306';
-        
+
+        $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ];
+
         try {
-            $this->connection = new PDO(
-                "mysql:host=$host;port=$port;dbname=$db",
-                $user,
-                $pass
-            );
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $e) {
-            throw new Exception("Connection failed: " . $e->getMessage());
+            $this->connection = new PDO($dsn, $user, $pass, $options);
+        } catch (PDOException $e) {
+            // More detailed error message
+            throw new Exception(sprintf(
+                "Connection failed: %s (Error code: %s)",
+                $e->getMessage(),
+                $e->getCode()
+            ));
         }
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }
         return self::$instance;
-    }
-
-    public function getConnection() {
-        return $this->connection;
-    }
-
-    public function query($sql, $params = []) {
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute($params);
-        return $stmt;
     }
 }
