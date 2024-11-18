@@ -46,7 +46,7 @@ class AuthController
             );
 
             $_SESSION['user_id'] = $this->db->getConnection()->lastInsertId();
-            header('Location: /bwb/dashboard');
+            header('Location: /dashboard');
         } catch (Exception $e) {
             $this->sendResponse(['error' => 'Registration failed'], 500);
         }
@@ -66,13 +66,13 @@ class AuthController
         }
 
         $_SESSION['user_id'] = $user['id'];
-        header('Location: /bwb/dashboard');
+        header('Location: /dashboard');
     }
 
     public function logout()
     {
         session_destroy();
-        header('Location: /bwb/login');
+        header('Location: /login');
     }
 
     public function getCurrentUser()
@@ -91,7 +91,7 @@ class AuthController
 
         if (!$user) {
             session_destroy();
-            header('Location: /bwb/login');
+            header('Location: /login');
             exit;
         }
 

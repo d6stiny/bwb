@@ -7,7 +7,7 @@ $user = $auth->getCurrentUser();
 
 $bottleId = $_GET['id'] ?? null;
 if (!$bottleId) {
-    header('Location: /bwb/dashboard');
+    header('Location: /dashboard');
     exit;
 }
 
@@ -16,7 +16,7 @@ $bottle = new Bottle();
 // Get bottle details - using array access for user ID
 $bottleDetails = $bottle->getById($bottleId, $user['id']);
 if (!$bottleDetails) {
-    header('Location: /bwb/dashboard');
+    header('Location: /dashboard');
     exit;
 }
 
@@ -251,8 +251,8 @@ $temperature_data = array_map(function ($temp) {
         </div>
 
         <div class="card chart-container">
-            <canvas id="temperatureChart" class="chart"></canvas>
-            <div class="chart-label">Temperature along the day</div>
+            <<canvas id="temperatureChart"></canvas>
+                <div class="chart-label">Temperature along the day</div>
         </div>
 
         <div style="margin-top: 24px">
@@ -274,62 +274,57 @@ $temperature_data = array_map(function ($temp) {
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
-        // Convert PHP data to JavaScript
-        const data = <?php echo json_encode($temperature_data); ?>;
+        const temperatureData = <?php echo json_encode($temperature_data); ?>;
 
-        // Function to draw the chart
-        function drawChart() {
-            const canvas = document.getElementById('temperatureChart');
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
+        // Prepare data for Chart.js
+        const labels = temperatureData.map(d => d.created_at);
+        const temperatures = temperatureData.map(d => d.temp);
 
-            // Clear the canvas
-            ctx.clearRect(0, 0, width, height);
-
-            // Set chart styles
-            ctx.strokeStyle = '#4cb5f9';
-            ctx.lineWidth = 2;
-
-            // Calculate scales
-            const xScale = width / (data.length - 1);
-            const yScale = height / (Math.max(...data.map(d => d.temp)) - Math.min(...data.map(d => d.temp)));
-
-            // Draw the line
-            ctx.beginPath();
-            data.forEach((point, index) => {
-                const x = index * xScale;
-                const y = height - (point.temp - Math.min(...data.map(d => d.temp))) * yScale;
-                if (index === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
+        // Create the chart
+        new Chart(document.getElementById('temperatureChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Temperature °C',
+                    data: temperatures,
+                    borderColor: '#4cb5f9',
+                    backgroundColor: 'rgba(76, 181, 249, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Temperature History'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Temperature (°C)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    }
                 }
-            });
-            ctx.stroke();
-
-            // Draw X-axis labels
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '12px Arial';
-            ctx.textAlign = 'center';
-            data.forEach((point, index) => {
-                const x = index * xScale;
-                ctx.fillText(point.time, x, height - 10);
-            });
-
-            // Draw Y-axis labels
-            ctx.textAlign = 'right';
-            const yLabels = [Math.min(...data.map(d => d.temp)), Math.max(...data.map(d => d.temp))];
-            yLabels.forEach((label, index) => {
-                const y = height - index * (height - 20);
-                ctx.fillText(`${label}°C`, 30, y);
-            });
-        }
-
-        // Call drawChart when the window loads and resizes
-        window.addEventListener('load', drawChart);
-        window.addEventListener('resize', drawChart);
+            }
+        });
     </script>
 </body>
 
