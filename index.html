@@ -9,10 +9,13 @@
     <title>BWB Home Page</title>
     <!-- CSS -->
     <link rel="stylesheet" href="public/css/index.css" />
+    <link rel="stylesheet" href="public/css/globals.css" />
     <!--NavBar CSS / Remove presettings-->
     <link rel="stylesheet" href="public/css/navbar.css" />
     <!-- fevicon -->
     <link rel="icon" href="public/images/favicon.png" />
+    <!-- Script JS -->
+    <script src="public/js/textslider.js" defer></script>
   </head>
   <!-- Código Visivel -->
   <body>
@@ -33,9 +36,7 @@
     <main class="main">
       <section class="centralpart">
         <div class="text_principal">
-          <h1 class="titulo">
-            <strong>Hydrate <br />Your Future</strong>
-          </h1>
+          <h1 class="titulo"><strong>Hydrate Your Future</strong></h1>
           <p class="subtitulo">
             The Brainy Water Bottle (BWB) is a smart bottle that measures water
             temperature hourly or throughout the day, bringing innovation and
@@ -43,37 +44,46 @@
           </p>
           <!-- buttons or text with border and hover -->
           <div class="buttoms">
-            <a href="signup.php"><button class="but_try">Try Now</button></a>
-            <a href="learnmore.html"
-              ><button class="but_learn">Learn More</button></a
-            >
+            <a href="signup.php"><button class="but">Try Now</button></a>
+            <a href="learnmore.html"><button class="but">Learn More</button></a>
           </div>
         </div>
-        <div class="imagem">
-          <img
-            src="public/images/quadrado branco.png"
-            alt="garrafa de àgua"
-            width="40%"
-          />
-        </div>
+        <img
+          class="imagem"
+          src="public/images/quadrado branco.png"
+          alt="garrafa de àgua"
+          width="40%"
+          height="20%"
+        />
       </section>
       <section class="features">
         <h2 class="feat_title">Features</h2>
-
-        <p><strong>Level of The water</strong></p>
-        <p>
-          With the help of this tecnology you can always see the level od the
-          water insite your bottle
-        </p>
-        <p><strong>Modern and Portable Design</strong></p>
-        <p>
-          Stylish, easy-to-carry design that fits perfectly into any lifestyle.
-        </p>
-        <p><strong>Temperature Monitoring</strong></p>
-        <p>
-          Display water temperature to ensure ou know the best places to store
-          it.
-        </p>
+        <div class="container-slider">
+          <button id="prev-button">
+            <strong class="text-button"><</strong>
+          </button>
+          <div class="container-text">
+            <div class="feat-texto">
+              <p><strong class="ft_tx_title">Level of The water</strong></p>
+              <p class="ft_text">
+                With the help of this tecnology you can always see the level od
+                the water insite your bottle
+              </p>
+            </div>
+            <div class="feat-texto">
+              <p>
+                <strong class="ft_tx_title">Modern and Portable Design</strong>
+              </p>
+              <p class="ft_text">
+                Stylish, easy-to-carry design that fits perfectly into any
+                lifestyle.
+              </p>
+            </div>
+          </div>
+          <button id="next-button">
+            <strong class="text-button">></strong>
+          </button>
+        </div>
       </section>
     </main>
     <footer class="rodape"></footer>

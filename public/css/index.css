@@ -1,31 +1,109 @@
-main {
-  margin-top: 6%;
-  margin-left: 15%;
-  margin-right: 15%;
+main{
+    margin-top: 4%;
+    margin-left: 15%;
+    margin-right: 15%;
 }
-.centralpart {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  gap: 42px;
+.centralpart{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3%;
+    gap: 32px;
 }
-.text_principal {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+.text_principal{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
 }
-.buttoms {
-  display: flex;
-  flex-direction: row;
-  gap: 23px;
+.titulo{
+    font-size: 300%;
+    text-wrap: nowrap;
+    padding-top: 3.5%;
 }
-.titulo {
-  font-weight: 600;
-  font-size: 400%;
-  text-wrap: nowrap;
+.subtitulo{
+    font-size: 110%;
+    text-align: center;
+    text-wrap: balance;
 }
-.imagem {
-  margin-left: 20%;
-  padding-top: -20%;
-  min-width: 40%;
+.buttoms{
+    display: flex;
+    flex-direction: row;
+    gap: 23px;
+}
+.but{
+    background-color: rgba(4,12,23,255);
+    border: 2px solid whitesmoke;
+    padding: 8px 16px;
+    text-wrap: nowrap;
+}
+.imagem{
+    max-height: 20rem;
+}
+.container-text{
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    align-items: center;
+}
+.feat_title{
+    font-size: 200%;
+    margin-bottom: 3%;
+}
+#next-button , #prev-button{
+    padding: 8px 16px;
+    border-radius: 90%;
+    border: none;
+    background: none;
+    font-size: 90%;
+    color: white;
+    /*     background-color: rgba(88,204,2,255); */
+    border: 1px solid white;
+}
+.features{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2%;
+}
+.container-slider{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+}
+.container-text{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    gap: 50px;
+    margin-bottom: 3%;
+}
+.ft_tx_title{
+    font-size: 120%;
+}
+.ft_text{
+    color: gray;
+}
+.feat-texto{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 300px;
+    height: 100px;
+    border: 1px solid white;
+    padding: 2%;
+    gap: 10px;
+}
+.on{
+    display: block;
+    visibility: visible;
+    opacity: 1;
 }
