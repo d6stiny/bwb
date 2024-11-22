@@ -1,12 +1,13 @@
 <?php
 require_once 'controllers/Auth.php';
+require_once 'helpers.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    
+
     $auth = new AuthController();
-    
+
     try {
         $auth->register($email, $password);
         // Will be redirected by AuthController if successful
@@ -18,33 +19,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - BWB</title>
-</head>
-<body>
-    <header class="cabecalho">
-        <a href="index.html" class="link_back"><button class="but_back">Go to Home Page</button></a>
-        <h1>Sign Up</h1>
-    </header>
-    <?php if (isset($error)): ?>
-        <div class="error"><?php echo htmlspecialchars($error); ?></div>
-    <?php endif; ?>
 
-    <form id="signupForm" method="POST">
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+
+    <?php echo style('css/globals.css'); ?>
+    <?php echo style('css/signup.css'); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+
+        <form method="POST">
+            <div class="input-container">
+                <input type="email" name="email" placeholder="E-mail" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <input type="password" name="password" placeholder="Confirm the password" required />
+            </div>
+
+            <button type="submit" class="primary">Sign Up</button>
+        </form>
+
+        <div class="separator">
+            <hr />
+            <span>OR</span>
+            <hr />
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="login.php">Login</a></p>
-    <br><br><br>
-    <a href="homeaccount.html"><button>Go to your bottles (Debug only)</button></a>
+
+        <p>Already have an account? <a href="./login">Log In</a></p>
+    </div>
 </body>
+
 </html>
