@@ -2,15 +2,21 @@
 require_once 'controllers/Auth.php';
 require_once 'helpers.php';
 
+$error = null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-
     $auth = new AuthController();
-
     try {
         $auth->login($email, $password);
     } catch (Exception $e) {
+        // Return JSON response for AJAX request
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => $e->getMessage()]);
+            exit;
+        }
         $error = $e->getMessage();
     }
 }
@@ -22,34 +28,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log In</title>
 
-    <?php echo style('css/globals.css'); ?>
-    <?php echo style('css/login.css'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+    <?= style('login') ?>
+
+    <link rel="icon" href="./assets/logo.svg" />
+
+    <script src="./js/login.js" defer></script>
+
+    <title>Log In</title>
 </head>
 
 <body>
-    <div class="login-container">
+    <section class="container">
         <h1>Log In</h1>
+        <form method="post" class="form" id="login-form">
+            <div class="inputs">
+                <div class="input-container">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Email" required />
+                    <p class="form-error" id="email-error"></p>
+                </div>
 
-        <form method="POST">
-            <div class="input-container">
-                <input type="email" name="email" placeholder="E-mail" required />
-                <input type="password" name="password" placeholder="Password" required />
+                <div class="input-container">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Password" required />
+                    <p class="form-error" id="password-error"></p>
+                </div>
             </div>
 
-            <button type="submit" class="primary">Log In</button>
+            <button class="btn-primary" type="submit">Log In</button>
         </form>
 
-        <div class="separator">
+        <div class="divider">
             <hr />
-            <span>OR</span>
+            OR
             <hr />
         </div>
 
-        <p>Don't have an account? <a href="./signup">Sign Up</a></p>
-    </div>
+        <a class="cancel-btn btn-secondary" href="./index">Cancel</a>
+
+        <p class="msg">
+            Don't have an account? <a href="./signup">Sign Up</a>
+        </p>
+    </section>
 </body>
 
 </html>

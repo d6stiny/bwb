@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../config/Database.php';
 
 class AuthController
@@ -8,73 +7,81 @@ class AuthController
 
     public function __construct()
     {
-        $this->db = Database::getInstance();
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        session_start();
+        $this->db = new Database();
     }
 
-    private function sendResponse($data, $code = 200)
-    {
-        http_response_code($code);
-        header('Content-Type: application/json');
-        echo json_encode($data);
-        exit;
-    }
-
+    /**
+     * Handle user registration
+     */
     public function register($email, $password)
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->sendResponse(['error' => 'Invalid email'], 400);
-        }
-
+        // Check if user already exists
         $stmt = $this->db->query(
-            "SELECT id FROM user WHERE email = ?",
+            "SELECT id FROM users WHERE email = ?",
             [$email]
         );
 
         if ($stmt->fetch()) {
-            $this->sendResponse(['error' => 'Email already exists'], 400);
+            $this->sendResponse(['error' => 'User already exists'], 409);
         }
 
+        // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+        // Insert new user
         try {
             $stmt = $this->db->query(
-                "INSERT INTO user (email, password) VALUES (?, ?)",
+                "INSERT INTO users (email, password) VALUES (?, ?)",
                 [$email, $hashedPassword]
             );
 
+            // Set session and redirect
             $_SESSION['user_id'] = $this->db->getConnection()->lastInsertId();
             header('Location: /dashboard');
+            exit;
         } catch (Exception $e) {
             $this->sendResponse(['error' => 'Registration failed'], 500);
         }
     }
 
+    /**
+     * Handle user login
+     */
     public function login($email, $password)
     {
+        // Fetch user by email
         $stmt = $this->db->query(
-            "SELECT id, password FROM user WHERE email = ?",
+            "SELECT id, password FROM users WHERE email = ?",
             [$email]
         );
 
         $user = $stmt->fetch();
 
+        // Verify password
         if (!$user || !password_verify($password, $user['password'])) {
             $this->sendResponse(['error' => 'Invalid credentials'], 401);
         }
 
+        // Set session and redirect
         $_SESSION['user_id'] = $user['id'];
         header('Location: /dashboard');
+        exit;
     }
 
+    /**
+     * Handle user logout
+     */
     public function logout()
     {
         session_destroy();
         header('Location: /login');
+        exit;
     }
 
+    /**
+     * Get current authenticated user
+     */
     public function getCurrentUser()
     {
         if (!isset($_SESSION['user_id'])) {
@@ -82,8 +89,9 @@ class AuthController
             exit;
         }
 
+        // Fetch user by ID
         $stmt = $this->db->query(
-            "SELECT id, email FROM user WHERE id = ?",
+            "SELECT id, email FROM users WHERE id = ?",
             [$_SESSION['user_id']]
         );
 
@@ -98,11 +106,14 @@ class AuthController
         return $user;
     }
 
-    public function getBottles($userId)
+    /**
+     * Send JSON response for AJAX requests
+     */
+    private function sendResponse($data, $statusCode = 200)
     {
-        return $this->db->query(
-            "SELECT * FROM bottle WHERE user_id = ?",
-            [$userId]
-        )->fetchAll();
+        http_response_code($statusCode);
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
     }
 }

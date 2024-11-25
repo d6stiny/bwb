@@ -27,11 +27,11 @@ class Bottle extends Model
         )->rowCount();
     }
 
-    public function getById($bottleId, $userId)
+    public function getById($bottleId)
     {
         return $this->db->query(
-            "SELECT * FROM bottle WHERE id = ? AND user_id = ?",
-            [$bottleId, $userId]
+            "SELECT * FROM bottle WHERE id = ?",
+            [$bottleId]
         )->fetch();
     }
 
@@ -42,5 +42,13 @@ class Bottle extends Model
             [$bottleId]
         )->fetch();
         return $result ? $result['level'] : 0;
+    }
+
+    public function getUserBottles($userId)
+    {
+        return $this->db->query(
+            "SELECT * FROM bottles WHERE user_id = ?",
+            [$userId]
+        )->fetchAll();
     }
 }

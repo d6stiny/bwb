@@ -1,0 +1,116 @@
+.container {
+  max-width: 56rem; /* 869px */
+  margin: 0 auto;
+
+  padding: 1.5rem 1rem; /* 24px 16px */
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem; /* 28px */
+
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+}
+
+.logout-btn {
+  margin-left: auto;
+
+  color: hsl(var(--secondary-foreground));
+}
+
+.logout-btn svg {
+  width: 1.125rem; /* 18px */
+  height: 1.125rem; /* 18px */
+
+  stroke: hsl(var(--secondary-foreground));
+}
+
+.bottles-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem; /* 16px */
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+  .bottles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+  .bottles-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.add-bottle-btn {
+  height: 5rem; /* 80px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-decoration: none;
+
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+
+  border: var(--border-width) dashed hsl(var(--border));
+  border-radius: var(--radius);
+
+  transition: all var(--transition-duration) ease-in;
+}
+
+.add-bottle-btn:focus {
+  outline: var(--outline-width) solid hsl(var(--ring));
+  outline-offset: var(--outline-width);
+}
+
+.add-bottle-btn:active {
+  transform: scale(0.95);
+}
+
+.bottle {
+  height: 5rem; /* 80px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-decoration: none;
+
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+
+  border-radius: var(--radius);
+  border: var(--border-width) solid hsl(var(--border));
+
+  transition: all var(--transition-duration) ease-in;
+}
+
+.bottle:focus {
+  outline: var(--outline-width) solid hsl(var(--ring));
+  outline-offset: var(--outline-width);
+}
+
+.bottle:active {
+  transform: scale(0.95);
+}
+
+/* ------------------------------------------------------------ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem; /* 28px */
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* 16px */
+}

@@ -23,35 +23,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
 
-    <?php echo style('css/globals.css'); ?>
-    <?php echo style('css/signup.css'); ?>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+    <?= style('signup') ?>
+
+    <link rel="icon" href="./assets/logo.svg" />
+
+    <script src="./js/signup.js" defer></script>
+
+    <title>Sign Up</title>
 </head>
 
 <body>
-    <div class="signup-container">
+    <section class="container">
         <h1>Sign Up</h1>
+        <form method="post" class="form" id="signup-form">
+            <div class="inputs">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Email" required />
+                <p class="form-error" id="email-error"></p>
 
-        <form method="POST">
-            <div class="input-container">
-                <input type="email" name="email" placeholder="E-mail" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <input type="password" name="password" placeholder="Confirm the password" required />
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password" required />
+                <p class="form-error" id="password-error"></p>
+
+                <label for="password">Confirm the password</label>
+                <input type="password" name="password" id="confirm-password" placeholder="Confirm the password"
+                    required />
+                <p class="form-error" id="confirm-password-error"></p>
             </div>
 
-            <button type="submit" class="primary">Sign Up</button>
+            <button class="btn-primary" type="submit">Sign Up</button>
         </form>
 
-        <div class="separator">
+        <div class="divider">
             <hr />
-            <span>OR</span>
+            OR
             <hr />
         </div>
 
-        <p>Already have an account? <a href="./login">Log In</a></p>
-    </div>
+        <a class="cancel-btn btn-secondary" href="./index">Cancel</a>
+
+        <p class="msg">
+            Already have an account? <a href="./login">Log In</a>
+        </p>
+    </section>
 </body>
 
 </html>

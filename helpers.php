@@ -1,10 +1,23 @@
 <?php
-function asset($path)
+
+/**
+ * Generate link to CSS file
+ * @param string $file CSS filename
+ * @return string HTML link tag
+ */
+function style($file)
 {
-    return '/public/' . ltrim($path, '/');
+    $basePath = defined('BASE_PATH') ? BASE_PATH : '';
+    return '<link rel="stylesheet" href="' . $basePath . '/css/' . $file . '.css">';
 }
 
-function style($path)
+/**
+ * Generate link to JavaScript file  
+ * @param string $file JavaScript filename
+ * @return string HTML script tag
+ */
+function script($file)
 {
-    return '<link rel="stylesheet" href="' . asset($path) . '">';
+    $basePath = defined('BASE_PATH') ? BASE_PATH : '';
+    return '<script src="' . $basePath . '/js/' . $file . '.js"></script>';
 }

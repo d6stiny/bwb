@@ -1,44 +1,57 @@
-CREATE TABLE `user` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+-- Create 'users' table
+CREATE TABLE `users` (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `target` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    target_value FLOAT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES `user`(id) ON DELETE CASCADE
-);
-
-CREATE TABLE `bottle` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    level INT DEFAULT 0,
-    FOREIGN KEY (user_id) REFERENCES `user`(id) ON DELETE CASCADE
-);
-
-CREATE TABLE `temperature` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    bottle_id INT NOT NULL,
-    temperature_value FLOAT NOT NULL,
-    measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bottle_id) REFERENCES `bottle`(id) ON DELETE CASCADE
-);
-
-CREATE TABLE `bottle_status` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    bottle_id INT NOT NULL,
-    status_id INT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bottle_id) REFERENCES `bottle`(id) ON DELETE CASCADE
-);
-
+-- Create 'status' table
 CREATE TABLE `status` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    status_description VARCHAR(100) NOT NULL
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    status_description VARCHAR(255) NOT NULL
 );
 
-ALTER TABLE `bottle_status`
-ADD FOREIGN KEY (status_id) REFERENCES `status`(id) ON DELETE SET NULL;
+-- Insert default statuses into 'status' table
+INSERT INTO `status` (status_description) VALUES 
+('Empty'),
+('Low'),
+('Good'),
+('Full');
+
+-- Create 'bottles' table
+CREATE TABLE `bottles` (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Create 'bottle_status' table
+CREATE TABLE `bottle_status` (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    bottle_id INT NOT NULL,
+    status_id INT NOT NULL,
+    measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (bottle_id) REFERENCES bottles(id),
+    FOREIGN KEY (status_id) REFERENCES status(id)
+);
+
+-- Create 'temperature' table
+CREATE TABLE `temperature` (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    bottle_id INT NOT NULL,
+    value FLOAT NOT NULL,
+    measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (bottle_id) REFERENCES bottles(id)
+);
+
+-- Create 'bottle_level' table
+CREATE TABLE `bottle_level` (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    bottle_id INT NOT NULL,
+    level_percentage FLOAT NOT NULL,
+    measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (bottle_id) REFERENCES bottles(id)
+);
