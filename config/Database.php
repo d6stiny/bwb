@@ -4,7 +4,7 @@ class Database
     private static $instance = null;
     private $connection = null;
 
-    private function __construct()
+    public function __construct()
     {
         $host = '127.0.0.1';
         $db = 'bwb';

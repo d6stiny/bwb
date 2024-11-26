@@ -5,9 +5,6 @@ require_once 'partials/Footer.php';
 
 $auth = new AuthController();
 $user = $auth->getCurrentUser();
-
-// Get user's bottles
-$bottles = $auth->getBottles($user['id']);
 ?>
 
 <!DOCTYPE html>
