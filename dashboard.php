@@ -1,10 +1,20 @@
 <?php
 require_once 'controllers/Auth.php';
 require_once 'models/Bottle.php';
-require_once 'partials/Footer.php';
 
+/**
+ * This script initializes the authentication controller and retrieves the current user.
+ * It then creates an instance of the Bottle model and fetches the bottles associated with the current user.
+ *
+ * @var AuthController $auth The authentication controller instance.
+ * @var array $user The current user's data.
+ * @var Bottle $bottleModel The Bottle model instance.
+ * @var array $bottles The list of bottles associated with the current user.
+ */
 $auth = new AuthController();
 $user = $auth->getCurrentUser();
+$bottleModel = new Bottle();
+$bottles = $bottleModel->getUserBottles($user['id']);
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +51,7 @@ $user = $auth->getCurrentUser();
             </button>
             <?php foreach ($bottles as $bottle): ?>
                 <a href="./bottles/<?= htmlspecialchars($bottle['id']) ?>" class="bottle">
-                    Bottle <?= htmlspecialchars($bottle['name'] ?? $bottle['id']) ?>
+                    <?= htmlspecialchars($bottle['name'] ?? $bottle['id']) ?>
                 </a>
             <?php endforeach; ?>
         </div>
@@ -56,7 +66,7 @@ $user = $auth->getCurrentUser();
                 </button>
             </div>
 
-            <form method="get" class="form" id="add-bottle-form">
+            <form method="post" class="form" id="add-bottle-form">
                 <div class="inputs">
                     <div class="input-container">
                         <label for="bottleId">Bottle ID</label>

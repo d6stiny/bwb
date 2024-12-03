@@ -12,6 +12,11 @@ $path = str_replace($projectDir, '', $requestUri);
 // Start output buffering
 ob_start();
 
+if (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
+    $_GET['id'] = $matches[1];
+    require __DIR__ . '/bottle.php';
+}
+
 // Handle special routes first
 if ($path === '/dashboard') {
     require __DIR__ . '/dashboard.php';

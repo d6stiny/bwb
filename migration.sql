@@ -22,8 +22,9 @@ INSERT INTO `status` (status_description) VALUES
 -- Create 'bottles' table
 CREATE TABLE `bottles` (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
+    user_id INT,
     name VARCHAR(255),
+    level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -38,8 +39,8 @@ CREATE TABLE `bottle_status` (
     FOREIGN KEY (status_id) REFERENCES status(id)
 );
 
--- Create 'temperature' table
-CREATE TABLE `temperature` (
+-- Create 'temperatures' table
+CREATE TABLE `temperatures` (
     id INT PRIMARY KEY AUTO_INCREMENT,
     bottle_id INT NOT NULL,
     value FLOAT NOT NULL,
@@ -55,3 +56,8 @@ CREATE TABLE `bottle_level` (
     measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (bottle_id) REFERENCES bottles(id)
 );
+
+-- Add example bottles
+insert into bottles (name, level) values ('Unnamed Bottle', 0);
+insert into bottles (name, level) values ('Unnamed Bottle', 0);
+insert into bottles (name, level) values ('Unnamed Bottle', 0);

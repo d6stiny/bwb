@@ -38,7 +38,7 @@ const bottleNameError = document.getElementById("bottle-name-error");
 function validateDeleteBottleForm(event) {
   event.preventDefault();
 
-  const correctBottleName = "Bottle 1";
+  const correctBottleName = bottleData.name;
   bottleNameError.textContent = "";
 
   let isValid = true;
@@ -50,15 +50,17 @@ function validateDeleteBottleForm(event) {
     isValid = false;
   } else if (bottleNameField.value.trim() !== correctBottleName) {
     bottleNameError.textContent =
-      "To confirm, type the bottle name in the box above";
+      "The bottle name you entered does not match the bottle name of the bottle you want to delete";
     bottleNameError.style.display = "block";
     isValid = false;
   }
 
   if (isValid) {
-    deleteBottleForm.reset();
-    deleteBottleDialog.style.display = "none";
-    window.location.href = "../dashboard";
+    fetch(`/bottles/${bottleData.id}`, {
+      method: "POST",
+    }).then(() => {
+      window.location.href = "/dashboard";
+    });
   }
 }
 

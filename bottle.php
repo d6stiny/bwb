@@ -13,17 +13,17 @@ $statusModel = new Status();
 
 // Get bottle data
 $bottle = $bottleModel->getById($bottleId);
+$bottle_name = $bottle['name'] ?? 'Unnamed Bottle';
 $bottle_level = $bottleModel->getLevel($bottleId);
 $temperatures = $bottleModel->getTemperatures($bottleId);
-$status = $statusModel->getCurrentStatus($bottleId);
+$current_temperature = $bottleModel->getCurrentTemperature($bottleId);
 
-// Format temperature data for the chart
-$temperature_data = array_map(function ($temp) {
-    return [
-        'created_at' => $temp['measured_at'],
-        'temp' => floatval($temp['value'])
-    ];
-}, $temperatures);
+$temperaturesJson = json_encode($temperatures);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $bottleModel->release($bottleId, $user['id']);
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +39,6 @@ $temperature_data = array_map(function ($temp) {
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./js/delete-bottle-dialog.js" defer></script>
 
     <title>Bottle</title>
 </head>
@@ -56,7 +55,7 @@ $temperature_data = array_map(function ($temp) {
             </a>
         </header>
 
-        <h1>Bottle 1</h1>
+        <h1><?= $bottle_name ?></h1>
 
         <div class="informations-grid">
             <div class="information">
@@ -64,14 +63,16 @@ $temperature_data = array_map(function ($temp) {
                     <i data-lucide="milk"></i>
 
                     <div class="water-level">
-                        <strong>74%</strong>
+                        <strong>
+                            <?= $bottle_level ?>%
+                        </strong>
                         <span>Level</span>
                     </div>
                 </div>
 
                 <div class="level-bar">
-                    <div class="bar" style="height: 74%"></div>
-                    <span class="current-level">74%</span>
+                    <div class="bar" style="height: <?= $bottle_level ?>%"></div>
+                    <span class="current-level"><?= $bottle_level ?>%</span>
                 </div>
             </div>
 
@@ -80,7 +81,7 @@ $temperature_data = array_map(function ($temp) {
                     <i data-lucide="flame">Icon</i>
 
                     <div class="temperature">
-                        <strong>18 °C</strong>
+                        <strong><?= htmlspecialchars($current_temperature) ?> °C</strong>
                         <span>Temperature</span>
                     </div>
                 </div>
@@ -109,12 +110,14 @@ $temperature_data = array_map(function ($temp) {
                     </button>
                 </div>
 
-                <form method="get" class="form" id="delete-bottle-form">
+                <form method="post" class="form" id="delete-bottle-form">
                     <div class="inputs">
                         <div class="input-container">
-                            <label for="bottle-name">To confirm, type "Bottle 1" in the box below</label>
+                            <label for="bottle-name">To confirm, type
+                                "<strong><?= htmlspecialchars($bottle_name) ?></strong>" in the box below</label>
                             <input type="text" name="bottle-name" id="bottle-name"
-                                placeholder="To confirm, type &quot;Bottle 1&quot;" required />
+                                placeholder="To confirm, type &quot;<?= htmlspecialchars($bottle_name) ?>&quot;"
+                                required />
                             <p class="form-error" id="bottle-name-error"></p>
                         </div>
                     </div>
@@ -127,21 +130,26 @@ $temperature_data = array_map(function ($temp) {
     <script>
         lucide.createIcons();
 
-        const ctx = document
-            .getElementById("bottle-temperature-chart")
-            .getContext("2d");
+        const temperaturesData = <?php echo $temperaturesJson; ?>;
 
-        const hours = Array.from({ length: 25 }, (_, i) => i);
-        const temperatures = [
-            12, 12.3, 12.2, 12.1, 12.4, 12.5, 12.7, 12.6, 13, 13.2, 13.3, 13.3,
-            13.4, 13.2, 13.6, 13.7, 13.4, 13.3, 13.2, 12, 11.9, 11.8, 11.9, 11.7,
-            11.6,
-        ];
+        // Sort data chronologically
+        const sortedData = temperaturesData.sort((a, b) =>
+            new Date(a.measured_at) - new Date(b.measured_at)
+        );
+
+        const labels = sortedData.map(item => {
+            const date = new Date(item.measured_at);
+            return date.getHours().toString().padStart(2, '0') + ':00';
+        });
+
+        const temperatures = sortedData.map(item => item.value);
+
+        const ctx = document.getElementById("bottle-temperature-chart").getContext("2d");
 
         new Chart(ctx, {
             type: "line",
             data: {
-                labels: hours.map((h) => h.toString().padStart(2, "0") + ":00"),
+                labels: labels,
                 datasets: [
                     {
                         label: "Temperature",
@@ -175,10 +183,6 @@ $temperature_data = array_map(function ($temp) {
                         ticks: {
                             color: "#A3AAAC",
                             maxRotation: 0,
-                            callback: function (value, index, values) {
-                                if (index % 6 === 0) return this.getLabelForValue(value);
-                                return "";
-                            },
                             font: {
                                 size: 14, // Increased from default
                             },
@@ -204,6 +208,14 @@ $temperature_data = array_map(function ($temp) {
             },
         });
     </script>
+    <script>
+        // Pass PHP variables to JavaScript
+        const bottleData = {
+            id: <?= json_encode($bottleId) ?>,
+            name: <?= json_encode($bottle_name) ?>
+        };
+    </script>
+    <script src="/js/delete-bottle-dialog.js"></script>
 </body>
 
 </html>

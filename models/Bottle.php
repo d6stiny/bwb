@@ -3,34 +3,34 @@ require_once __DIR__ . '/Model.php';
 
 class Bottle extends Model
 {
-    public function create($userId)
+    public function redeem($bottleId, $userId, $bottleName)
     {
         return $this->db->query(
-            "INSERT INTO bottle (user_id) VALUES (?)",
-            [$userId]
+            "UPDATE bottles SET user_id = ?, name = ? WHERE id = ? AND user_id IS NULL",
+            [$userId, $bottleName, $bottleId]
         );
     }
 
     public function getTemperatures($bottleId)
     {
         return $this->db->query(
-            "SELECT * FROM temperature WHERE bottle_id = ? ORDER BY measured_at DESC",
+            "SELECT * FROM temperatures WHERE bottle_id = ? ORDER BY measured_at DESC",
             [$bottleId]
         )->fetchAll();
     }
 
-    public function delete($bottleId, $userId)
+    public function release($bottleId, $userId)
     {
         return $this->db->query(
-            "DELETE FROM bottle WHERE id = ? AND user_id = ?",
+            "UPDATE bottles SET user_id = NULL, name = 'Unnamed Bottle' WHERE id = ? AND user_id = ?",
             [$bottleId, $userId]
-        )->rowCount();
+        )->fetch();
     }
 
     public function getById($bottleId)
     {
         return $this->db->query(
-            "SELECT * FROM bottle WHERE id = ?",
+            "SELECT * FROM bottles WHERE id = ?",
             [$bottleId]
         )->fetch();
     }
@@ -38,7 +38,7 @@ class Bottle extends Model
     public function getLevel($bottleId)
     {
         $result = $this->db->query(
-            "SELECT level FROM bottle WHERE id = ?",
+            "SELECT level FROM bottles WHERE id = ?",
             [$bottleId]
         )->fetch();
         return $result ? $result['level'] : 0;
@@ -50,5 +50,13 @@ class Bottle extends Model
             "SELECT * FROM bottles WHERE user_id = ?",
             [$userId]
         )->fetchAll();
+    }
+
+    public function getCurrentTemperature($bottleId)
+    {
+        return $this->db->query(
+            "SELECT value FROM temperatures WHERE bottle_id = ? ORDER BY measured_at DESC LIMIT 1",
+            [$bottleId]
+        )->fetchColumn();
     }
 }
