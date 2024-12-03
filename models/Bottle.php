@@ -59,4 +59,12 @@ class Bottle extends Model
             [$bottleId]
         )->fetchColumn();
     }
+
+    public function rename($bottleId)
+    {
+        return $this->db->query(
+            "UPDATE bottles SET name = ? WHERE id = ?",
+            [$bottleId]
+        );
+    }
 }
