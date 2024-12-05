@@ -6,12 +6,14 @@ class Database
 
     public function __construct()
     {
-        $host = '127.0.0.1';
-        $db = 'bwb';
-        $user = 'root';
-        $pass = 'youshallnotpass';
-        $port = '3306';
+        $host = getenv('DB_HOST') ?: '127.0.0.1';
+        $db = getenv('DB_NAME') ?: 'bwb';
+        $user = getenv('DB_USER') ?: 'root';
+        $pass = getenv('DB_PASS') ?: 'youshallnotpass';
+        $port = getenv('DB_PORT') ?: '3306';
+
         $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

@@ -48,7 +48,7 @@ header {
   }
 }
 
-.add-bottle-btn {
+.redeem-bottle-btn {
   height: 5rem; /* 80px */
   display: flex;
   justify-content: center;
@@ -66,12 +66,12 @@ header {
   transition: all var(--transition-duration) ease-in;
 }
 
-.add-bottle-btn:focus {
+.redeem-bottle-btn:focus {
   outline: var(--outline-width) solid hsl(var(--ring));
   outline-offset: var(--outline-width);
 }
 
-.add-bottle-btn:active {
+.redeem-bottle-btn:active {
   transform: scale(0.95);
 }
 

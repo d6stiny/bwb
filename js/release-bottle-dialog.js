@@ -1,11 +1,11 @@
-const deleteBottleDialog = document.getElementById("delete-bottle-dialog");
+const deleteBottleDialog = document.getElementById("release-bottle-dialog");
 
 const openDeleteBottleDialogBtn = document.getElementById(
-  "open-delete-bottle-dialog-btn"
+  "open-release-bottle-dialog-btn"
 );
 
 const closeDeleteBottleDialogBtn = document.getElementById(
-  "close-delete-bottle-dialog"
+  "close-release-bottle-dialog"
 );
 
 openDeleteBottleDialogBtn.addEventListener("click", () => {
@@ -30,7 +30,7 @@ window.addEventListener("keydown", (event) => {
 
 // ----------------------------------------------------------------------
 
-const deleteBottleForm = document.getElementById("delete-bottle-form");
+const deleteBottleForm = document.getElementById("release-bottle-form");
 
 const bottleNameField = document.getElementById("bottle-name");
 const bottleNameError = document.getElementById("bottle-name-error");

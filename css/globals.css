@@ -370,3 +370,24 @@ textarea:active {
 .cancel-btn {
   width: 100%;
 }
+
+fieldset {
+  padding: 0 1rem 1rem 1rem; /* 16px */
+
+  border-radius: var(--radius);
+  border: var(--border-width) dashed hsl(var(--border));
+}
+
+.dangerous-fieldset {
+  border: var(--border-width) dashed hsl(var(--destructive));
+}
+
+legend {
+  padding: 0.5rem; /* 8px */
+
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+
+  background-color: hsl(var(--background));
+}

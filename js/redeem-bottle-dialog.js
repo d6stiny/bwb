@@ -1,11 +1,11 @@
-const addBottleDialog = document.getElementById("add-bottle-dialog");
+const addBottleDialog = document.getElementById("redeem-bottle-dialog");
 
 const openAddBottleDialogBtn = document.getElementById(
-  "open-add-bottle-dialog-btn"
+  "open-redeem-bottle-dialog-btn"
 );
 
 const closeAddBottleDialogBtn = document.getElementById(
-  "close-add-bottle-dialog"
+  "close-redeem-bottle-dialog"
 );
 
 openAddBottleDialogBtn.addEventListener("click", () => {
@@ -30,7 +30,7 @@ window.addEventListener("keydown", (event) => {
 
 // ----------------------------------------------------------------------
 
-const addBottleForm = document.getElementById("add-bottle-form");
+const addBottleForm = document.getElementById("redeem-bottle-form");
 
 const bottleIdField = document.getElementById("bottleId");
 const bottleIdError = document.getElementById("bottleId-error");

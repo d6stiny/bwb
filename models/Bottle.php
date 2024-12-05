@@ -21,10 +21,11 @@ class Bottle extends Model
 
     public function release($bottleId, $userId)
     {
+        // set user id to null, name to 'Unnamed Bottle', level to 0 and delete all temperatures
         return $this->db->query(
-            "UPDATE bottles SET user_id = NULL, name = 'Unnamed Bottle' WHERE id = ? AND user_id = ?",
+            "UPDATE bottles SET user_id = NULL, name = 'Unnamed Bottle', level = 0 WHERE id = ? AND user_id = ?",
             [$bottleId, $userId]
-        )->fetch();
+        );
     }
 
     public function getById($bottleId)
@@ -66,5 +67,13 @@ class Bottle extends Model
             "UPDATE bottles SET name = ? WHERE id = ?",
             [$bottleId]
         );
+    }
+
+    public function getAverageTemperature($bottleId)
+    {
+        return $this->db->query(
+            "SELECT AVG(value) FROM temperatures WHERE bottle_id = ?",
+            [$bottleId]
+        )[0];
     }
 }

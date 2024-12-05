@@ -29,7 +29,7 @@ $bottles = $bottleModel->getUserBottles($user['id']);
 
     <link rel="icon" href="./assets/logo.svg" />
 
-    <script src="./js/add-bottle-dialog.js" defer></script>
+    <script src="./js/redeem-bottle-dialog.js" defer></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <title>Dashboard</title>
@@ -47,8 +47,8 @@ $bottles = $bottleModel->getUserBottles($user['id']);
         <h1>Your bottles</h1>
 
         <div class="bottles-grid">
-            <button class="add-bottle-btn" id="open-add-bottle-dialog-btn">
-                + Add bottle
+            <button class="redeem-bottle-btn" id="open-redeem-bottle-dialog-btn">
+                + Redeem bottle
             </button>
             <?php foreach ($bottles as $bottle): ?>
                 <a href="./bottles/<?= htmlspecialchars($bottle['id']) ?>" class="bottle">
@@ -58,16 +58,16 @@ $bottles = $bottleModel->getUserBottles($user['id']);
         </div>
     </section>
 
-    <div class="dialog" id="add-bottle-dialog">
+    <div class="dialog" id="redeem-bottle-dialog">
         <div class="dialog-content">
             <div class="dialog-header">
-                <h2>Add Bottle</h2>
-                <button class="dialog-close-btn" id="close-add-bottle-dialog">
+                <h2>Redeem Bottle</h2>
+                <button class="dialog-close-btn" id="close-redeem-bottle-dialog">
                     <i data-lucide="x"></i>
                 </button>
             </div>
 
-            <form method="post" class="form" id="add-bottle-form">
+            <form method="post" class="form" id="redeem-bottle-form">
                 <div class="inputs">
                     <div class="input-container">
                         <label for="bottleId">Bottle ID</label>
@@ -82,7 +82,7 @@ $bottles = $bottleModel->getUserBottles($user['id']);
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary">Add Bottle</button>
+                <button type="submit" class="btn-primary">Redeem Bottle</button>
             </form>
         </div>
     </div>

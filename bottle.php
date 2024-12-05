@@ -96,22 +96,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <footer>
-            <button class="delete-bottle-btn btn-destructive" id="open-delete-bottle-dialog-btn">
-                <i data-lucide="trash-2"></i>
-                Delete Bottle
-            </button>
+            <fieldset class="dangerous-fieldset bottle-actions-fieldset">
+                <legend>Danger Zone</legend>
+                <button class="rename-bottle-btn btn-secondary" id="open-rename-bottle-dialog-btn">
+                    <i data-lucide="pencil-line"></i>
+                    Rename Bottle
+                </button>
+                <button class="release-bottle-btn btn-destructive" id="open-release-bottle-dialog-btn">
+                    <i data-lucide="circle-arrow-out-down-left"></i>
+                    Release Bottle
+                </button>
+            </fieldset>
         </footer>
 
-        <div class="dialog" id="delete-bottle-dialog">
+        <div class="dialog" id="release-bottle-dialog">
             <div class="dialog-content">
                 <div class="dialog-header">
-                    <h2>Delete Bottle</h2>
-                    <button class="dialog-close-btn" id="close-delete-bottle-dialog">
+                    <h2>Release Bottle</h2>
+                    <button class="dialog-close-btn" id="close-release-bottle-dialog">
                         <i data-lucide="x"></i>
                     </button>
                 </div>
 
-                <form method="post" class="form" id="delete-bottle-form">
+                <form method="post" class="form" id="release-bottle-form">
                     <div class="inputs">
                         <div class="input-container">
                             <label for="bottle-name">To confirm, type
@@ -123,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-destructive">Delete Bottle</button>
+                    <button type="submit" class="btn-destructive">Release Bottle</button>
                 </form>
             </div>
     </section>
@@ -216,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             name: <?= json_encode($bottle_name) ?>
         };
     </script>
-    <script src="/js/delete-bottle-dialog.js"></script>
+    <script src="/js/release-bottle-dialog.js"></script>
 </body>
 
 </html>
