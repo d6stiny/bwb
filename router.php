@@ -7,9 +7,6 @@ $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $projectDir = '/bwb';
 $path = str_replace($projectDir, '', $requestUri);
 
-// Start output buffering
-ob_start();
-
 // Handle API endpoints first
 if ($path === '/redeem') {
     require __DIR__ . '/redeem.php';
@@ -47,19 +44,4 @@ if ($path === '/dashboard') {
     }
 }
 
-// Get the buffered content
-$content = ob_get_clean();
-
-// Check if the response is HTML
-if (strpos($content, '<head>') !== false) {
-    // Insert globals.css before the closing head tag
-    $content = str_replace(
-        '</head>',
-        '    <link rel="stylesheet" href="/css/globals.css">' . PHP_EOL . '</head>',
-        $content
-    );
-}
-
-// Output the modified content
-echo $content;
 return true;
