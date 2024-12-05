@@ -17,14 +17,12 @@ if ($path === '/redeem') {
 if (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
     $_GET['id'] = $matches[1];
     require __DIR__ . '/bottle.php';
+    return true;
 }
 
 // Handle other routes
 if ($path === '/dashboard') {
     require __DIR__ . '/dashboard.php';
-} elseif (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
-    $_GET['id'] = $matches[1];
-    require __DIR__ . '/bottle.php';
 } elseif ($path === '/login') {
     require __DIR__ . '/login.php';
 } elseif ($path === '/logout') {
