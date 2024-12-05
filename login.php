@@ -1,6 +1,14 @@
 <?php
 require_once 'controllers/Auth.php';
 
+$auth = new AuthController();
+
+// Redirect if user is already logged in
+if (isset($_SESSION['user_id'])) {
+    header('Location: /dashboard');
+    exit;
+}
+
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
