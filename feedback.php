@@ -1,3 +1,79 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $webhook = 'https://discord.com/api/webhooks/1310564546850586634/DSzlWN-boRLcO-sI6ohLxJIkqdCHpT4m9GmN03vcc8VBRDFaZ74TPS29jrnU1sjphfCV';
+    $data = [
+        'content' => null,
+        'embeds' => [
+            [
+                'title' => '❗ New Feedback',
+                'description' => '‎',
+                'color' => 5297151,
+                'fields' => [
+                    [
+                        'name' => ':adult: Name',
+                        'value' => $_POST['name'] ?? 'N/A',
+                        'inline' => true
+                    ],
+                    [
+                        'name' => ':e_mail: Email',
+                        'value' => $_POST['email'] ?? 'N/A',
+                        'inline' => true
+                    ],
+                    [
+                        'name' => ':droplet: Bottle Id',
+                        'value' => '`' . ($_POST['bottle-id'] ?? 'N/A') . '`',
+                        'inline' => true
+                    ],
+                    [
+                        'name' => '‎',
+                        'value' => '‎',
+                    ],
+                    [
+                        'name' => ':page_with_curl: Feedback',
+                        'value' => $_POST['feedback'] ?? '',
+                    ],
+                    [
+                        'name' => '‎',
+                        'value' => '‎',
+                    ],
+                ],
+                'timestamp' => date(format: 'c'),
+            ],
+        ],
+    ];
+
+    $jsonData = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+    // Send POST request using cURL
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $webhook);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+
+    // Enable response capture
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+
+    // Check for cURL errors
+    if ($response === false) {
+        $error = curl_error($ch);
+        echo "cURL Error: $error";
+    } else {
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($httpCode >= 400) {
+            echo "HTTP Error: $httpCode Response: $response";
+        } else {
+            header("Location: /thanksfeedback");
+        }
+    }
+
+    curl_close($ch);
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +94,7 @@
 <body>
     <section class="container">
         <h1>Feedback</h1>
-        <form method="get" class="form" id="feedback-form">
+        <form method="post" class="form" id="feedback-form">
             <div class="inputs">
                 <div class="input-container">
                     <label for="name">Name</label>

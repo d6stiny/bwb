@@ -63,8 +63,7 @@ function validateFeedbackForm(event) {
   }
 
   if (isValid) {
-    feedbackForm.reset();
-    window.location.href = "./thanksfeedback";
+    feedbackForm.submit();
   }
 }
 

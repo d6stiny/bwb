@@ -23,7 +23,7 @@
             server for more updates and to stay in touch.
         </p>
 
-        <a href="./index.html" class="btn-primary">Back to Home</a>
+        <a href="./index" class="btn-primary">Back to Home</a>
     </section>
 </body>
 
