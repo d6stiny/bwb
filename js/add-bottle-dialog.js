@@ -46,6 +46,8 @@ function validateAddBottleForm(event) {
 
   let isValid = true;
 
+  //   let userId = document.getElementById("userId").value;
+
   if (bottleIdField.value.trim() === "") {
     bottleIdError.textContent = "Bottle Id is required";
     bottleIdError.style.display = "block";
@@ -66,10 +68,32 @@ function validateAddBottleForm(event) {
     isValid = false;
   }
 
-  if (isValid) {
-    addBottleForm.reset();
-    addBottleDialog.style.display = "none";
-  }
+  const data = {
+    bottleId: bottleIdField.value,
+    bottleName: bottleNameField.value,
+  };
+
+  fetch("/redeem", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then(async (response) => {
+      const jsonResponse = await response.json();
+      console.log("Response:", jsonResponse);
+
+      if (response.ok) {
+        window.location.reload();
+        addBottleDialog.style.display = "none";
+      } else {
+        throw new Error(jsonResponse.message);
+      }
+    })
+    .catch((error) => {
+      alert(error.message || "An error occurred");
+    });
 }
 
 addBottleForm.addEventListener("submit", validateAddBottleForm);

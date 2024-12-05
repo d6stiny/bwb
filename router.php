@@ -12,12 +12,19 @@ $path = str_replace($projectDir, '', $requestUri);
 // Start output buffering
 ob_start();
 
+// Handle API endpoints first
+if ($path === '/redeem') {
+    require __DIR__ . '/redeem.php';
+    return true;
+}
+
+// Handle bottle routes
 if (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
     $_GET['id'] = $matches[1];
     require __DIR__ . '/bottle.php';
 }
 
-// Handle special routes first
+// Handle other routes
 if ($path === '/dashboard') {
     require __DIR__ . '/dashboard.php';
 } elseif (preg_match('/^\/bottles\/(\d+)$/', $path, $matches)) {
