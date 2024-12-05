@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <?= style('feedback') ?>
+    <link rel="stylesheet" href="./assets/feedback.css">
 
     <link rel="icon" href="./assets/logo.svg" />
 

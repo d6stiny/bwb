@@ -1,6 +1,4 @@
 <?php
-// Include helpers first
-require_once __DIR__ . '/helpers.php';
 
 // Get the request URI and remove any query strings
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

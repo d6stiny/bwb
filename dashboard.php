@@ -24,7 +24,7 @@ $bottles = $bottleModel->getUserBottles($user['id']);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <?= style('dashboard') ?>
+    <link rel="stylesheet" href="./css/dashboard.css">
 
     <link rel="icon" href="./assets/logo.svg" />
 

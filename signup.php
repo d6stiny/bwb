@@ -1,6 +1,5 @@
 <?php
 require_once 'controllers/Auth.php';
-require_once 'helpers.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
@@ -24,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <?= style('signup') ?>
+    <link rel="stylesheet" href="./css/signup.css">
 
     <link rel="icon" href="./assets/logo.svg" />
 
