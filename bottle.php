@@ -17,6 +17,7 @@ $bottle_name = $bottle['name'] ?? 'Unnamed Bottle';
 $bottle_level = $bottleModel->getLevel($bottleId);
 $temperatures = $bottleModel->getTemperatures($bottleId);
 $current_temperature = $bottleModel->getCurrentTemperature($bottleId);
+$averageTemperature = $bottleModel->getAverageTemperature($bottleId);
 
 $temperaturesJson = json_encode($temperatures);
 
@@ -82,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i data-lucide="flame">Icon</i>
 
                     <div class="temperature">
-                        <strong><?= htmlspecialchars($current_temperature) ?> °C</strong>
+                        <strong><?= htmlspecialchars($current_temperature) ?> °C (avg
+                            <?= htmlspecialchars($current_temperature) ?> °C)</strong>
                         <span>Temperature</span>
                     </div>
                 </div>

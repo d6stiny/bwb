@@ -74,6 +74,6 @@ class Bottle extends Model
         return $this->db->query(
             "SELECT AVG(value) FROM temperatures WHERE bottle_id = ?",
             [$bottleId]
-        )[0];
+        )->fetchColumn();
     }
 }
