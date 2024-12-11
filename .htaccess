@@ -1,5 +1,35 @@
-RewriteEngine On
-RewriteBase /bwb/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ router.php [QSA,L]
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Set base path - comment out if in root directory
+    # RewriteBase /bwb/
+
+    # Redirect if not file
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # Redirect if not directory  
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Redirect everything else to router.php
+    RewriteRule ^(.*)$ router.php [QSA,L]
+</IfModule>
+
+# Protect files and directories
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Configure PHP settings if allowed
+<IfModule mod_php.c>
+    php_value display_errors 0
+    php_value session.cookie_httponly 1
+    php_value session.use_only_cookies 1
+</IfModule>
+
+# Enable CORS if needed
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>

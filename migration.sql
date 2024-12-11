@@ -57,7 +57,11 @@ CREATE TABLE `bottle_level` (
     FOREIGN KEY (bottle_id) REFERENCES bottles(id)
 );
 
--- Add example bottles
+-- Sample data
+insert into users (email, password) values ('janedoe@example.com', 'password');
+insert into bottles (user_id, name, level) values (1, 'Jane Doe''s Bottle', 0);
+insert into bottles (user_id, name, level) values (1, 'Jane Doe''s Bottle', 100);
 insert into bottles (name, level) values ('Unnamed Bottle', 0);
-insert into bottles (name, level) values ('Unnamed Bottle', 0);
-insert into bottles (name, level) values ('Unnamed Bottle', 0);
+insert into temperatures (bottle_id, value) values (1, 25.5);
+insert into temperatures (bottle_id, value) values (2, 26.5);
+insert into bottle_level (bottle_id, level_percentage) values (1, 50);
