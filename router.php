@@ -3,8 +3,11 @@
 // Get the request URI and remove any query strings
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Get the project directory name 
-$projectDir = '/bwb';
+// Dynamically determine the project directory
+$scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+$projectDir = $scriptDir !== '/' ? $scriptDir : '';
+
+// Clean the path
 $path = str_replace($projectDir, '', $requestUri);
 
 // Handle API endpoints first

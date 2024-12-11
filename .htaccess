@@ -1,15 +1,17 @@
 # Enable rewrite engine
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
-    # Set base path - comment out if in root directory
-    # RewriteBase /bwb/
-
-    # Redirect if not file
+    
+    # Automatically determine RewriteBase
+    RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+    RewriteRule ^(.*) - [E=BASE:%1]
+    
+    # Use determined base path
+    RewriteBase /
+    
+    # Redirect if not file or directory
     RewriteCond %{REQUEST_FILENAME} !-f
-    # Redirect if not directory  
     RewriteCond %{REQUEST_FILENAME} !-d
-    # Redirect everything else to router.php
     RewriteRule ^(.*)$ router.php [QSA,L]
 </IfModule>
 
