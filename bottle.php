@@ -15,9 +15,9 @@ $statusModel = new Status();
 $bottle = $bottleModel->getById($bottleId);
 $bottle_name = $bottle['name'] ?? 'Unnamed Bottle';
 $bottle_level = $bottleModel->getLevel($bottleId);
-$temperatures = $bottleModel->getTemperatures($bottleId);
+$temperatures = $bottleModel->getTodaysTemperatures($bottleId);
 $current_temperature = $bottleModel->getCurrentTemperature($bottleId);
-$averageTemperature = $bottleModel->getAverageTemperature($bottleId);
+$average_temperature = $bottleModel->getAverageTemperature($bottleId);
 
 $temperaturesJson = json_encode($temperatures);
 
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="temperature">
                         <strong><?= htmlspecialchars($current_temperature) ?> °C (avg
-                            <?= htmlspecialchars($current_temperature) ?> °C)</strong>
+                            <?= htmlspecialchars(number_format($average_temperature, 1)) ?> °C)</strong>
                         <span>Temperature</span>
                     </div>
                 </div>

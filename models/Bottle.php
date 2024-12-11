@@ -19,6 +19,14 @@ class Bottle extends Model
         )->fetchAll();
     }
 
+    public function getTodaysTemperatures($bottleId)
+    {
+        return $this->db->query(
+            "SELECT * FROM temperatures WHERE bottle_id = ? AND measured_at >= CURDATE() ORDER BY measured_at DESC",
+            [$bottleId]
+        )->fetchAll();
+    }
+
     public function release($bottleId, $userId)
     {
         // set user id to null, name to 'Unnamed Bottle', level to 0 and delete all temperatures
