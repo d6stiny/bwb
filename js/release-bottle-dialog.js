@@ -10,21 +10,25 @@ const closeDeleteBottleDialogBtn = document.getElementById(
 
 openDeleteBottleDialogBtn.addEventListener("click", () => {
   deleteBottleDialog.style.display = "flex";
+  document.body.style.overflow = "hidden";
 });
 
 closeDeleteBottleDialogBtn.addEventListener("click", () => {
   deleteBottleDialog.style.display = "none";
+  document.body.style.overflow = "auto";
 });
 
 window.addEventListener("click", (event) => {
   if (event.target === deleteBottleDialog) {
     deleteBottleDialog.style.display = "none";
+    document.body.style.overflow = "auto";
   }
 });
 
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && deleteBottleDialog.style.display === "flex") {
     deleteBottleDialog.style.display = "none";
+    document.body.style.overflow = "auto";
   }
 });
 
