@@ -85,11 +85,11 @@ class Bottle extends Model
         )->fetchColumn();
     }
 
-    public function rename($bottleId)
+    public function rename($bottleId, $newName)
     {
         return $this->db->query(
             "UPDATE bottles SET name = ? WHERE id = ?",
-            [$bottleId]
+            [$newName, $bottleId]
         );
     }
 
