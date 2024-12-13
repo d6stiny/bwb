@@ -13,9 +13,8 @@ CREATE TABLE `bottles` (
     name VARCHAR(255),
     level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
 
 -- Create 'temperatures' table
 CREATE TABLE `temperatures` (
@@ -23,7 +22,7 @@ CREATE TABLE `temperatures` (
     bottle_id INT NOT NULL,
     value FLOAT NOT NULL,
     measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bottle_id) REFERENCES bottles(id)
+    FOREIGN KEY (bottle_id) REFERENCES bottles(id) ON DELETE CASCADE
 );
 
 -- Create 'bottle_level' table
@@ -32,7 +31,7 @@ CREATE TABLE `bottle_level` (
     bottle_id INT NOT NULL,
     level_percentage FLOAT NOT NULL,
     measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (bottle_id) REFERENCES bottles(id)
+    FOREIGN KEY (bottle_id) REFERENCES bottles(id) ON DELETE CASCADE
 );
 
 -- Sample data
