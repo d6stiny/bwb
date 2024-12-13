@@ -14,7 +14,7 @@ $statusModel = new Status();
 // Get bottle data
 $bottle = $bottleModel->getById($bottleId);
 $bottle_name = $bottle['name'] ?? 'Unnamed Bottle';
-$bottle_level = $bottleModel->getLevel($bottleId) ?? null;
+$bottle_level = $bottleModel->getLevel($bottleId);
 $temperatures = $bottleModel->getTodaysTemperatures($bottleId) ?? null;
 $current_temperature = $bottleModel->getCurrentTemperature($bottleId) ?? 0;
 $average_temperature = $bottleModel->getAverageTemperature($bottleId) ?? 0;

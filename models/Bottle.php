@@ -63,10 +63,14 @@ class Bottle extends Model
     public function getLevel($bottleId)
     {
         $result = $this->db->query(
-            "SELECT level FROM bottles WHERE id = ?",
+            "SELECT level_percentage FROM bottle_level 
+        WHERE bottle_id = ? 
+        ORDER BY measured_at DESC 
+        LIMIT 1",
             [$bottleId]
         )->fetch();
-        return $result ? $result['level'] : 0;
+
+        return $result ? $result['level_percentage'] : 0;
     }
 
     public function getUserBottles($userId)
