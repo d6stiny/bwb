@@ -37,6 +37,7 @@ try {
 
     // Route mapping
     $routes = [
+        '/404' => '404.php',
         '/dashboard' => 'dashboard.php',
         '/login' => 'login.php',
         '/logout' => 'logout.php',
@@ -68,6 +69,11 @@ try {
         exit;
     }
 
+    // Handle static files first
+    if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js)$/', $path)) {
+        return false;
+    }
+
     // Handle defined routes
     if (isset($routes[$path])) {
         $file = "{$documentRoot}/{$routes[$path]}";
@@ -78,11 +84,6 @@ try {
         exit;
     }
 
-    // Handle static files
-    if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js)$/', $path)) {
-        return false;
-    }
-
     // Try PHP file with extension
     $phpFile = "{$documentRoot}{$path}.php";
     if (is_readable($phpFile)) {
@@ -90,11 +91,16 @@ try {
         exit;
     }
 
-    // No matching route found
+    // If no route matches, show 404
     error_log("[Router] No matching route for: {$path}");
     header('HTTP/1.0 404 Not Found');
-    echo '404 Not Found';
+    require "{$documentRoot}/404.php";
+    exit;
 
+    // Handle static files
+    if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js)$/', $path)) {
+        return false;
+    }
 } catch (Throwable $e) {
     error_log("[Router] Error: " . $e->getMessage());
     error_log("[Router] File: " . $e->getFile() . " Line: " . $e->getLine());
