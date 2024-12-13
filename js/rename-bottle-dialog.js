@@ -44,10 +44,10 @@ const confirmBottleNameError = document.getElementById(
   "confirm-bottle-name-error"
 );
 
-function validateAddBottleForm(event) {
+function validateRenameBottleForm(event) {
   event.preventDefault();
 
-  const correctBottleName = "Bottle 1";
+  const correctBottleName = bottleData.name;
   newBottleNameError.textContent = "";
   confirmBottleNameError.textContent = "";
 
@@ -77,10 +77,33 @@ function validateAddBottleForm(event) {
   }
 
   if (isValid) {
-    renameBottleForm.reset();
-    renameBottleDialog.style.display = "none";
-    window.location.href = "./bottle.html";
+    // Send PATCH request to update bottle name
+    fetch(`/bottles/${bottleData.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        newName: newBottleNameField.value.trim(),
+      }),
+    })
+      .then(async (response) => {
+        const jsonResponse = await response.json();
+
+        if (response.ok) {
+          window.location.reload();
+          renameBottleDialog.style.display = "none";
+        } else {
+          // Show error in the form
+          newBottleNameError.textContent = jsonResponse.message;
+          newBottleNameError.style.display = "block";
+        }
+      })
+      .catch((error) => {
+        newBottleNameError.textContent = error.message || "An error occurred";
+        newBottleNameError.style.display = "block";
+      });
   }
 }
 
-renameBottleForm.addEventListener("submit", validateAddBottleForm);
+renameBottleForm.addEventListener("submit", validateRenameBottleForm);

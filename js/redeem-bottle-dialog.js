@@ -50,8 +50,6 @@ function validateAddBottleForm(event) {
 
   let isValid = true;
 
-  //   let userId = document.getElementById("userId").value;
-
   if (bottleIdField.value.trim() === "") {
     bottleIdError.textContent = "Bottle Id is required";
     bottleIdError.style.display = "block";
@@ -72,32 +70,36 @@ function validateAddBottleForm(event) {
     isValid = false;
   }
 
-  const data = {
-    bottleId: bottleIdField.value,
-    bottleName: bottleNameField.value,
-  };
+  if (isValid) {
+    const data = {
+      bottleId: bottleIdField.value,
+      bottleName: bottleNameField.value,
+    };
 
-  fetch("/redeem", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then(async (response) => {
-      const jsonResponse = await response.json();
-      console.log("Response:", jsonResponse);
-
-      if (response.ok) {
-        window.location.reload();
-        addBottleDialog.style.display = "none";
-      } else {
-        throw new Error(jsonResponse.message);
-      }
+    fetch("/redeem", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     })
-    .catch((error) => {
-      alert(error.message || "An error occurred");
-    });
+      .then(async (response) => {
+        const jsonResponse = await response.json();
+
+        if (response.ok) {
+          window.location.reload();
+          addBottleDialog.style.display = "none";
+        } else {
+          // Show error in the form
+          bottleIdError.textContent = jsonResponse.message;
+          bottleIdError.style.display = "block";
+        }
+      })
+      .catch((error) => {
+        bottleIdError.textContent = error.message || "An error occurred";
+        bottleIdError.style.display = "block";
+      });
+  }
 }
 
 addBottleForm.addEventListener("submit", validateAddBottleForm);

@@ -5,8 +5,24 @@ class Bottle extends Model
 {
     public function redeem($bottleId, $userId, $bottleName)
     {
+        // First check if bottle exists
+        $bottle = $this->db->query(
+            "SELECT * FROM bottles WHERE id = ?",
+            [$bottleId]
+        )->fetch();
+
+        if (!$bottle) {
+            throw new Exception('Bottle not found', 404);
+        }
+
+        // Check if bottle is already redeemed
+        if ($bottle['user_id'] !== null) {
+            throw new Exception('This bottle is already linked to another user', 400);
+        }
+
+        // Proceed with redemption
         return $this->db->query(
-            "UPDATE bottles SET user_id = ?, name = ? WHERE id = ? AND user_id IS NULL",
+            "UPDATE bottles SET user_id = ?, name = ? WHERE id = ?",
             [$userId, $bottleName, $bottleId]
         );
     }
@@ -47,10 +63,14 @@ class Bottle extends Model
     public function getLevel($bottleId)
     {
         $result = $this->db->query(
-            "SELECT level FROM bottles WHERE id = ?",
+            "SELECT level_percentage FROM bottle_level 
+        WHERE bottle_id = ? 
+        ORDER BY measured_at DESC 
+        LIMIT 1",
             [$bottleId]
         )->fetch();
-        return $result ? $result['level'] : 0;
+
+        return $result ? $result['level_percentage'] : 0;
     }
 
     public function getUserBottles($userId)
@@ -69,11 +89,11 @@ class Bottle extends Model
         )->fetchColumn();
     }
 
-    public function rename($bottleId)
+    public function rename($bottleId, $newName)
     {
         return $this->db->query(
             "UPDATE bottles SET name = ? WHERE id = ?",
-            [$bottleId]
+            [$newName, $bottleId]
         );
     }
 

@@ -2,17 +2,17 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
-    # Automatically determine RewriteBase
-    RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
-    RewriteRule ^(.*) - [E=BASE:%1]
-    
-    # Use determined base path
+    # Add RewriteBase - adjust this to your subdirectory if needed
     RewriteBase /
     
     # Redirect if not file or directory
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ router.php [QSA,L]
+    RewriteRule . router.php [QSA,L]
+    
+    # Enable rewrite logging for debugging
+    RewriteLog "rewrite.debug.log"
+    RewriteLogLevel 3
 </IfModule>
 
 # Protect files and directories
@@ -35,3 +35,7 @@ AddDefaultCharset UTF-8
 <IfModule mod_headers.c>
     Header set Access-Control-Allow-Origin "*"
 </IfModule>
+
+# Enable error logging
+php_flag log_errors on
+php_value error_log /path/to/error.log

@@ -14,16 +14,51 @@ $statusModel = new Status();
 // Get bottle data
 $bottle = $bottleModel->getById($bottleId);
 $bottle_name = $bottle['name'] ?? 'Unnamed Bottle';
-$bottle_level = $bottleModel->getLevel($bottleId);
-$temperatures = $bottleModel->getTodaysTemperatures($bottleId);
-$current_temperature = $bottleModel->getCurrentTemperature($bottleId);
-$average_temperature = $bottleModel->getAverageTemperature($bottleId);
+$bottle_level = $bottleModel->getLevel($bottleId) ?? 0;
+$temperatures = $bottleModel->getTodaysTemperatures($bottleId) ?? null;
+$current_temperature = $bottleModel->getCurrentTemperature($bottleId) ?? 0;
+$average_temperature = $bottleModel->getAverageTemperature($bottleId) ?? 0;
 
 $temperaturesJson = json_encode($temperatures);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bottleModel->release($bottleId, $user['id']);
     exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    if (!$input || !isset($input['newName'])) {
+        http_response_code(400);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'New name is required'
+        ]);
+        exit;
+    }
+
+    try {
+        $newName = trim($input['newName']);
+        if (strlen($newName) < 3) {
+            throw new Exception('New name must be at least 3 characters');
+        }
+
+        $bottleModel->rename($bottleId, $newName);
+
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Bottle renamed successfully'
+        ]);
+        exit;
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ]);
+        exit;
+    }
 }
 ?>
 
@@ -83,8 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i data-lucide="flame">Icon</i>
 
                     <div class="temperature">
-                        <strong><?= htmlspecialchars($current_temperature) ?> °C (avg
-                            <?= htmlspecialchars(number_format($average_temperature, 1)) ?> °C)</strong>
+                        <strong><?= number_format((float) $current_temperature, 1) ?> °C (avg
+                            <?= number_format((float) $average_temperature, 1) ?> °C)</strong>
                         <span>Temperature</span>
                     </div>
                 </div>
@@ -111,6 +146,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </fieldset>
         </footer>
 
+        <!-- Rename bottle dialog -->
+        <div class="dialog" id="rename-bottle-dialog">
+            <div class="dialog-content">
+                <div class="dialog-header">
+                    <h2>Rename Bottle</h2>
+                    <button class="dialog-close-btn" id="close-rename-bottle-dialog">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <form method="get" class="form" id="rename-bottle-form">
+                    <div class="inputs">
+                        <div class="input-container">
+                            <label for="bottle-name">New Bottle Name</label>
+                            <input type="text" name="new-bottle-name" id="new-bottle-name" placeholder="New bottle name"
+                                required />
+                            <p class="form-error" id="new-bottle-name-error"></p>
+                        </div>
+                        <div class="input-container">
+                            <label for="bottle-name">To confirm, type
+                                "<strong><?= htmlspecialchars($bottle_name) ?></strong>" in the box below</label>
+                            <input type="text" name="confirm-bottle-name" id="confirm-bottle-name"
+                                placeholder="To confirm, type &quot;<?= htmlspecialchars($bottle_name) ?>&quot;"
+                                required />
+                            <p class="form-error" id="confirm-bottle-name-error"></p>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Rename Bottle</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Release bottle dialog -->
         <div class="dialog" id="release-bottle-dialog">
             <div class="dialog-content">
                 <div class="dialog-header">
@@ -225,6 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             name: <?= json_encode($bottle_name) ?>
         };
     </script>
+    <script src="/js/rename-bottle-dialog.js"></script>
     <script src="/js/release-bottle-dialog.js"></script>
 </body>
 
