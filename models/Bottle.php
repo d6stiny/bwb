@@ -5,8 +5,24 @@ class Bottle extends Model
 {
     public function redeem($bottleId, $userId, $bottleName)
     {
+        // First check if bottle exists
+        $bottle = $this->db->query(
+            "SELECT * FROM bottles WHERE id = ?",
+            [$bottleId]
+        )->fetch();
+
+        if (!$bottle) {
+            throw new Exception('Bottle not found', 404);
+        }
+
+        // Check if bottle is already redeemed
+        if ($bottle['user_id'] !== null) {
+            throw new Exception('This bottle is already linked to another user', 400);
+        }
+
+        // Proceed with redemption
         return $this->db->query(
-            "UPDATE bottles SET user_id = ?, name = ? WHERE id = ? AND user_id IS NULL",
+            "UPDATE bottles SET user_id = ?, name = ? WHERE id = ?",
             [$userId, $bottleName, $bottleId]
         );
     }
