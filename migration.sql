@@ -11,7 +11,6 @@ CREATE TABLE `bottles` (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     name VARCHAR(255),
-    level INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
