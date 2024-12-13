@@ -18,7 +18,7 @@
         <h1>Error 404</h1>
         <p>Page not found, please go back to home.</p>
 
-        <a href="./index" class="btn-primary">Back to Home</a>
+        <a href="/" class="btn-primary">Back to Home</a>
     </section>
 </body>
 
