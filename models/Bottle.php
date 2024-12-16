@@ -97,10 +97,11 @@ class Bottle extends Model
         );
     }
 
+    // get todays average temperature
     public function getAverageTemperature($bottleId)
     {
         return $this->db->query(
-            "SELECT AVG(value) FROM temperatures WHERE bottle_id = ?",
+            "SELECT AVG(value) FROM temperatures WHERE bottle_id = ? AND measured_at >= CURDATE()",
             [$bottleId]
         )->fetchColumn();
     }
