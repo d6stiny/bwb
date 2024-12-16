@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
             </a>
         </header>
 
-        <h1><?= $bottle_name ?></h1>
+        <h1><?= $bottle_name ?> <span>(<?= $bottleId ?>)</span></h1>
 
         <div class="informations-grid">
             <div class="information">

@@ -45,11 +45,13 @@ class Bottle extends Model
 
     public function release($bottleId, $userId)
     {
-        // set user id to null, name to 'Unnamed Bottle', level to 0 and delete all temperatures
-        return $this->db->query(
+        $this->db->query(
             "UPDATE bottles SET user_id = NULL, name = 'Unnamed Bottle', level = 0 WHERE id = ? AND user_id = ?",
             [$bottleId, $userId]
         );
+        $this->db->query("DELETE FROM bottle_level WHERE bottle_id = ?", [$bottleId]);
+        $this->db->query("DELETE FROM temperatures WHERE bottle_id = ?", [$bottleId]);
+        return;
     }
 
     public function getById($bottleId)
