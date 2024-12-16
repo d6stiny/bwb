@@ -13,6 +13,11 @@ $statusModel = new Status();
 
 // Get bottle data
 $bottle = $bottleModel->getById($bottleId);
+if (!$bottle || $bottle['user_id'] !== $user['id']) {
+    http_response_code(403);
+    header('Location: /dashboard');
+    exit;
+}
 $bottle_name = $bottle['name'] ?? 'Unnamed Bottle';
 $bottle_level = $bottleModel->getLevel($bottleId) ?? 0;
 $temperatures = $bottleModel->getTodaysTemperatures($bottleId) ?? null;
